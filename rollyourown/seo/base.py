@@ -17,7 +17,7 @@ from django.utils.encoding import iri_to_uri
 
 from rollyourown.seo.utils import NotSet, Literal
 from rollyourown.seo.options import Options
-from rollyourown.seo.fields import MetadataField
+from rollyourown.seo.fields import MetadataField, Tag, MetaTag, KeywordTag, Raw
 from rollyourown.seo.backends import backend_registry, RESERVED_FIELD_NAMES
 
 
