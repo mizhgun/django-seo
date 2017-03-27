@@ -6,7 +6,7 @@ from django.conf import settings
 from django.db import models
 from django.contrib.sites.models import Site
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.template import Template, Context
 from collections import OrderedDict as SortedDict
 
@@ -240,7 +240,7 @@ class ModelInstanceBackend(MetadataBackend):
             _path = models.CharField(_('path'), max_length=255, editable=False, unique=not (options.use_sites or options.use_i18n))
             _content_type = models.ForeignKey(ContentType, editable=False)
             _object_id = models.PositiveIntegerField(editable=False)
-            _content_object = generic.GenericForeignKey('_content_type', '_object_id')
+            _content_object = GenericForeignKey('_content_type', '_object_id')
             if options.use_sites:
                 _site = models.ForeignKey(Site, null=True, blank=True, verbose_name=_("site"))
             if options.use_i18n:

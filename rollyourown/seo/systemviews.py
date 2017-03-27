@@ -1,20 +1,16 @@
-#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+
+try:
+    from django.apps import apps
+
+    get_app = apps.get_app
+except ImportError:
+    from django.db.models.loading import get_app
+
 
 def get_seo_views(metadata_class):
     return get_view_names(metadata_class._meta.seo_views)
 
-    ## The following is a previous attempt to dynamically get all urls
-    ## This has a number of difficult spots, and is unnecessary when 
-    ## seo_views is given
-    #choices = SystemViews()
-    #seo_views = get_view_names(metadata_class._meta.seo_views)
-    #if seo_views:
-    #    return filter(lambda c: c[0] in seo_views, choices)
-    #else:
-    #    return choices
-
-from django.db.models.loading import get_app
 
 def get_view_names(seo_views):
     output = []
@@ -36,8 +32,10 @@ def get_view_names(seo_views):
                         output.append(url.name)
     return output
 
+
 from rollyourown.seo.utils import LazyChoices
 from django.utils.functional import lazy
+
 
 class SystemViews(LazyChoices):
     def populate(self):
@@ -66,17 +64,23 @@ class SystemViews(LazyChoices):
 
 
 from django import forms
+
+
 class SystemViewChoiceField(forms.TypedChoiceField):
     def _get_choices(self):
         return self._choices
+
     def _set_choices(self, value):
-        self._choices =  self.widget.choices = value
+        self._choices = self.widget.choices = value
+
     choices = property(_get_choices, _set_choices)
 
 
 from django.db.models.fields import BLANK_CHOICE_DASH
 from django.db import models
 from django.utils.text import capfirst
+
+
 class SystemViewField(models.CharField):
     def __init__(self, restrict_to, *args, **kwargs):
         self.restrict_to = restrict_to
